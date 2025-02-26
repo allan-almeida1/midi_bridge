@@ -5,6 +5,8 @@ from PyQt5 import uic
 from utils import list_serial_ports, list_midi_ports
 from bridge.serialmidi import MidiBridge
 from gui.worker import MidiBridgeWorker
+import sys
+import os
 
 
 class MainWindow(QWidget):
@@ -15,18 +17,19 @@ class MainWindow(QWidget):
 
     def __init__(self):
         super().__init__()
-        uic.loadUi('midi/ui/main_window.ui', self)
+        ui_file = self.resource_path('ui/main_window.ui')
+        uic.loadUi(ui_file, self)
 
         self.midi_bridge = None
         self.midi_bridge_worker = None
 
-        self.led_off = QPixmap('midi/gui/images/led_off.png')
-        self.led_on = QPixmap('midi/gui/images/led_on.png')
+        self.led_off = QPixmap(self.resource_path('gui/images/led_off.png'))
+        self.led_on = QPixmap(self.resource_path('gui/images/led_on.png'))
 
         self.led.setPixmap(self.led_off)
         self.led.setScaledContents(True)
 
-        self.refresh_button.setIcon(QIcon('midi/gui/images/refresh.png'))
+        self.refresh_button.setIcon(QIcon(self.resource_path('gui/images/refresh.png')))
 
         self.serial_ports = list_serial_ports()
         if self.serial_ports:
@@ -49,6 +52,11 @@ class MainWindow(QWidget):
         self.refresh_button.clicked.connect(self.refresh_ports)
 
         self.refresh_ports()
+    
+    def resource_path(self, relative_path):
+        """ Get the absolute path to the resource, works for dev and for PyInstaller """
+        base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+        return os.path.join(base_path, relative_path)
 
     def refresh_ports(self):
         self.log_message('Searching for ports...')
@@ -76,10 +84,14 @@ class MainWindow(QWidget):
         self.combo_box_midi_in.clear()
         self.combo_box_midi_in.addItem('')
         self.combo_box_midi_in.addItems(self.midi_in_ports)
+        if 'Driver IAC Barramento 1' in self.midi_in_ports:
+            self.combo_box_midi_in.setCurrentText('Driver IAC Barramento 1')
 
         self.combo_box_midi_out.clear()
         self.combo_box_midi_out.addItem('')
         self.combo_box_midi_out.addItems(self.midi_out_ports)
+        if 'Driver IAC Barramento 1' in self.midi_out_ports:
+            self.combo_box_midi_out.setCurrentText('Driver IAC Barramento 1')
 
     @pyqtSlot(str)
     def on_output_message(self, message):

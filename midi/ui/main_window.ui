@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
+ <class>SerialMIDIBridge</class>
  <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>782</width>
-    <height>426</height>
+    <x>400</x>
+    <y>200</y>
+    <width>660</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Serial MIDI Bridge</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
