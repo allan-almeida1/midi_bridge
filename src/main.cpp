@@ -5,8 +5,8 @@
 #include <WiFiUdp.h>
 
 // Wifi settings
-const char* ssid = "Ap 201";
-const char* password = "pzT6kozQ!g$G4!SG";
+const char* ssid = "SSID";
+const char* password = "PASSWORD";
 
 // OSC settings
 const char* host = "192.168.100.16";
